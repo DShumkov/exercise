@@ -1,0 +1,21 @@
+{
+    "name": "dmitry/tax-test",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Dmitry Shumkov",
+            "email": "d.shumkov@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/DShumkov/micra-router.git"
+        }
+    ],
+    "require": {
+        "dshumkov/micra-router": "dev-master",
+        "symfony/http-foundation": "^4.2@dev"
+    }
+}

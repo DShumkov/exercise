@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Magic numbers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <!-- <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script> -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container" id="app">
+            <h1 class="title">
+                Magic numbers
+            </h1>
+            <div>
+                <div class="field">
+                    <div class="control">
+                        <input v-model="num" class="input" v-bind:class="{ 'is-danger': hasError }" v-on:focus="hasError = false; errorMessage=''" type="number" min="0"
+                            step="1" placeholder="Put your integer here">
+                            <p class="help">Put your positive integer right here</p>
+                            <p v-if="errorMessage != '' "  class="help is-danger">{{ errorMessage }}</p>
+                    </div>
+                </div>
+                <div class="field is-grouped is-grouped-right">
+                    <div class="control">
+                        <button class="button is-link is-large" v-on:click="getOdds">Odds</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link is-large" v-on:click="getEvens">Evens</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link is-large" v-on:click="getSum">Sum all</button>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input v-model="result" class="input" type="number" readonly placeholder="Result">
+                        <p class="help">Result</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    console.log(axios);
+    var app = new Vue({
+        el: '#app',
+        data: {
+            num: 0,
+            result: 0,
+            hasError: false,
+            errorMessage: null
+        },
+        methods: {
+            getEvens: function () {
+                var self = this
+                axios.get('/api/calc/evens', {
+                    params: {
+                        num: self.num
+                    }
+                })
+                    .then(function (response) {
+                        self.result = response.data.result;
+                    })
+                    .catch(function (error) {
+                        self.hasError = true;
+                        if (error.response) {
+                            if (error.response.data) {
+                                self.errorMessage = error.response.data.message;
+                                return;
+                            }
+                        }
+                        self.errorMessage = "Server error. Please try again later."
+
+                    })
+            },
+            getOdds: function () {
+                var self = this
+                axios.get('/api/calc/odds', {
+                    params: {
+                        num: self.num
+                    }
+                })
+                    .then(function (response) {
+                        self.result = response.data.result;
+                    })
+                    .catch(function (error) {
+                        self.hasError = true;
+                        if (error.response) {
+                            if (error.response.data) {
+                                self.errorMessage = error.response.data.message;
+                                return;
+                            }
+                        }
+                        self.errorMessage = "Server error. Please try again later."
+                    })
+            },
+            getSum: function () {
+                var self = this
+                axios.get('/api/calc/row', {
+                    params: {
+                        num: self.num
+                    }
+                })
+                    .then(function (response) {
+                        self.result = response.data.result;
+                    })
+                    .catch(function (error) {
+                        self.hasError = true;
+                        if (error.response) {
+                            if (error.response.data) {
+                                self.errorMessage = error.response.data.message;
+                                return;
+                            }
+                        }
+                        self.errorMessage = "Server error. Please try again later."
+                    })
+            }
+        }
+    });
+</script>
+
+</html>
